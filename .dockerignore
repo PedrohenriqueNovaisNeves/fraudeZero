@@ -1,0 +1,22 @@
+target/
+build/
+
+# Arquivos e pastas do IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Configurações locais e temporários
+*.log
+*.tmp
+*.bak
+*.swp
+*.swo
+*.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
