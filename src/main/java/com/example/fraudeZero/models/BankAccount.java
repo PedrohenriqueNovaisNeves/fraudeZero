@@ -12,6 +12,7 @@ public class BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @OneToOne(cascade = CascadeType.ALL)
     private UUID idBankAccount;
     @Column(nullable = false, unique = true)
     private String owner;

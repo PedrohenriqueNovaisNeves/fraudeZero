@@ -17,7 +17,8 @@ public class User {
     @Column(nullable = false)
     private String cpfUser;
     @Column(nullable = false, unique = true)
-    private int accountNumber;
+    @OneToOne(cascade = CascadeType.ALL)
+    private BankAccount accountNumber;
 
     public UUID getIdUser() {
         return idUser;
@@ -27,12 +28,12 @@ public class User {
         return nameUser;
     }
 
-    public int getAccountNumber() {
-        return accountNumber;
-    }
-
     public String getCpfUser() {
         return cpfUser;
+    }
+
+    public BankAccount getAccountNumber() {
+        return accountNumber;
     }
 
     public void setIdUser(UUID idUser) {
@@ -47,7 +48,7 @@ public class User {
         this.cpfUser = cpfUser;
     }
 
-    public void setAccountNumber(int accountNumber) {
+    public void setAccountNumber(BankAccount accountNumber) {
         this.accountNumber = accountNumber;
     }
 }
