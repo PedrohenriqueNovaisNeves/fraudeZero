@@ -13,12 +13,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idUser;
+
     private String nameUser;
+
     @Column(nullable = false)
     private String cpfUser;
-    @Column(nullable = false, unique = true)
+
     @OneToOne(cascade = CascadeType.ALL)
-    private BankAccount accountNumber;
+    @JoinColumn(name = "bankAccount")
+    private BankAccount bankAccount;
 
     public UUID getIdUser() {
         return idUser;
@@ -32,8 +35,8 @@ public class User {
         return cpfUser;
     }
 
-    public BankAccount getAccountNumber() {
-        return accountNumber;
+    public BankAccount getBankAccount() {
+        return bankAccount;
     }
 
     public void setIdUser(UUID idUser) {
@@ -48,7 +51,7 @@ public class User {
         this.cpfUser = cpfUser;
     }
 
-    public void setAccountNumber(BankAccount accountNumber) {
-        this.accountNumber = accountNumber;
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 }

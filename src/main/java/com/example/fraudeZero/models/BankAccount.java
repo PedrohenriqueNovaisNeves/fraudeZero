@@ -12,44 +12,44 @@ public class BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @OneToOne(cascade = CascadeType.ALL)
-    private UUID idBankAccount;
-    @Column(nullable = false, unique = true)
-    private String owner;
-    @Column(nullable = false)
-    private BigDecimal transferLimit;
-    @Column(nullable = false)
+    private UUID idAccount;
+    @OneToOne
+    @JoinColumn(name = "owner")
+    private User user;
     private BigDecimal bankBalance;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "cpfUser", unique = true)
+    private User pixKey;
 
-    public UUID getIdBankAccount() {
-        return idBankAccount;
+    public UUID getIdAccount() {
+        return idAccount;
     }
 
-    public String getOwner() {
-        return owner;
-    }
-
-    public BigDecimal getTransferLimit() {
-        return transferLimit;
+    public User getUser() {
+        return user;
     }
 
     public BigDecimal getBankBalance() {
         return bankBalance;
     }
 
-    public void setIdBankAccount(UUID idBankAccount) {
-        this.idBankAccount = idBankAccount;
+    public User getPixKey() {
+        return pixKey;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setIdAccount(UUID idAccount) {
+        this.idAccount = idAccount;
     }
 
-    public void setTransferLimit(BigDecimal transferLimit) {
-        this.transferLimit = transferLimit;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void setBankBalance(BigDecimal bankBalance) {
         this.bankBalance = bankBalance;
+    }
+
+    public void setPixKey(User pixKey) {
+        this.pixKey = pixKey;
     }
 }

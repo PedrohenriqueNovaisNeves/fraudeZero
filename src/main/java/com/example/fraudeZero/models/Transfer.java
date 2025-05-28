@@ -15,23 +15,23 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID transferId;
     @Column(nullable = false)
-    private BankAccount origimAccount;
+    private String origimAccount;
     @Column(nullable = false)
-    private BankAccount targetAccount;
+    private String targetAccount;
     @Column(nullable = false)
     private BigDecimal value;
+    private String descriptionTransfer;
     private LocalDateTime dateTime;
-    private Status status;
 
     public UUID getTransferId() {
         return transferId;
     }
 
-    public BankAccount getOrigimAccount() {
+    public String getOrigimAccount() {
         return origimAccount;
     }
 
-    public BankAccount getTargetAccount() {
+    public String getTargetAccount() {
         return targetAccount;
     }
 
@@ -39,23 +39,23 @@ public class Transfer {
         return value;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public String getDescriptionTransfer() {
+        return descriptionTransfer;
     }
 
-    public Status getStatus() {
-        return status;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     public void setTransferId(UUID transferId) {
         this.transferId = transferId;
     }
 
-    public void setOrigimAccount(BankAccount origimAccount) {
+    public void setOrigimAccount(String origimAccount) {
         this.origimAccount = origimAccount;
     }
 
-    public void setTargetAccount(BankAccount targetAccount) {
+    public void setTargetAccount(String targetAccount) {
         this.targetAccount = targetAccount;
     }
 
@@ -63,11 +63,11 @@ public class Transfer {
         this.value = value;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setDescriptionTransfer(String descriptionTransfer) {
+        this.descriptionTransfer = descriptionTransfer;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }
