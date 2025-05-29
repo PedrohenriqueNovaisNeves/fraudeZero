@@ -17,9 +17,8 @@ public class BankAccount {
     @JoinColumn(name = "owner")
     private User user;
     private BigDecimal bankBalance;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cpfUser", unique = true)
-    private User pixKey;
+    @Column(nullable = false, unique = true)
+    private String pixKey;
 
     public UUID getIdAccount() {
         return idAccount;
@@ -33,7 +32,7 @@ public class BankAccount {
         return bankBalance;
     }
 
-    public User getPixKey() {
+    public String getPixKey() {
         return pixKey;
     }
 
@@ -49,7 +48,7 @@ public class BankAccount {
         this.bankBalance = bankBalance;
     }
 
-    public void setPixKey(User pixKey) {
+    public void setPixKey(String pixKey) {
         this.pixKey = pixKey;
     }
 }
