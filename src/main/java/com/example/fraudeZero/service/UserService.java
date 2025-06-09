@@ -2,6 +2,7 @@ package com.example.fraudeZero.service;
 
 import com.example.fraudeZero.dtos.UserRecord;
 import com.example.fraudeZero.models.User;
+import com.example.fraudeZero.repository.BankAccountRepository;
 import com.example.fraudeZero.repository.UserRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,10 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public User saveUser(UserRecord userRecord){
+    @Autowired
+    BankAccountRepository bankAccountRepository;
 
-        var user = new User();
-        BeanUtils.copyProperties(userRecord, user);
-
+    public User saveUser(User user){
         return userRepository.save(user);
     }
 
@@ -34,7 +34,32 @@ public class UserService {
                 .orElseThrow(()-> new RuntimeException("User not found"));
     }
 
-    public Object showAccountData(UUID id){
-        return userRepository.findByOwner(id);
+    public Object updateUserData(UUID id, User userModel){
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()){
+            throw new RuntimeException("User not found");
+        }
+
+        var newUser = user.get();
+
+        newUser.setNameUser(userModel.getNameUser());
+        newUser.setCpfUser(userModel.getCpfUser());
+
+        return userRepository.save(newUser);
+    }
+
+    public void deleteAllUsers(){
+        userRepository.deleteAll();
+    }
+
+    public void deleteOneUser(UUID id){
+        Optional<User> user = userRepository.findById(id);
+
+        if(user.isEmpty()){
+            throw new RuntimeException("User not found");
+        }
+
+        userRepository.delete(user.get());
     }
 }

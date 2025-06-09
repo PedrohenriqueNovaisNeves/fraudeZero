@@ -23,7 +23,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/bankAccount/**").permitAll()
                         .requestMatchers("/transfer/**").permitAll()
                         .anyRequest().authenticated()
