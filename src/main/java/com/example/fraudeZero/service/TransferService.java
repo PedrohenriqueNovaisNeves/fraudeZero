@@ -21,6 +21,8 @@ import java.util.UUID;
 @Service
 public class TransferService {
 
+    private final Adress[] VALID_ADRESSES = {Adress.CASA, Adress.TRABALHO, Adress.FACULDADE};
+
     @Autowired
     BankAccountRepository bankAccountRepository;
 
@@ -61,18 +63,21 @@ public class TransferService {
     }
 
 
-    public boolean validateLocation(String location) {
-        if (location == null || location.isBlank()) {
-            return true;
+    public boolean validateLocation(Adress adress) {
+        if(adress == null){
+            throw new RuntimeException("Location is null");
         }
 
-        return !(location.equalsIgnoreCase("CASA")
-                || location.equalsIgnoreCase("FACULDADE")
-                || location.equalsIgnoreCase("TRABALHO"));
+        for(Adress validAdress : VALID_ADRESSES){
+            if(adress == validAdress){
+                return true;
+            }
+        }
 
+        return false;
     }
 
-    public Object sendTransfer(String origimAccount, String destinationAccount, BigDecimal value, String location, String description) {
+    public Object sendTransfer(String origimAccount, String destinationAccount, BigDecimal value, Adress location, String description) {
         Optional<BankAccount> origin = bankAccountRepository.findByPixKey(origimAccount);
 
         if (origin.isEmpty()) {

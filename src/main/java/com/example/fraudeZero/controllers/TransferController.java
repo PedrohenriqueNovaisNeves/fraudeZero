@@ -22,11 +22,11 @@ public class TransferController {
     TransferService transferService;
 
     @PostMapping("sendTransfer")
-    public ResponseEntity<Object> sendTransfer(@Valid @RequestBody TransferRecord transferRecord, String adress){
+    public ResponseEntity<Object> sendTransfer(@Valid @RequestBody TransferRecord transferRecord){
         var transfer = new Transfer();
         BeanUtils.copyProperties(transferRecord, transfer);
 
-        transferService.sendTransfer(transfer.getOrigimAccount(), transfer.getTargetAccount(), transfer.getValue(), adress, transfer.getDescriptionTransfer());
+        transferService.sendTransfer(transfer.getOrigimAccount(), transfer.getTargetAccount(), transfer.getValue(), transfer.getAdress(), transfer.getDescriptionTransfer());
 
         return ResponseEntity.status(HttpStatus.OK).body("Transfer completed");
     }

@@ -3,6 +3,7 @@ package com.example.fraudeZero.service;
 import com.example.fraudeZero.dtos.BankAccountRecord;
 import com.example.fraudeZero.models.BankAccount;
 import com.example.fraudeZero.repository.BankAccountRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class BankAccountService {
     @Autowired
     BankAccountRepository bankAccountRepository;
 
+    @Transactional
     public BankAccount saveAccount(BankAccount account){
         return bankAccountRepository.save(account);
     }

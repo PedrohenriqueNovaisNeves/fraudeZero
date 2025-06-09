@@ -1,11 +1,11 @@
 package com.example.fraudeZero.dtos;
 
+import com.example.fraudeZero.models.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record BankAccountRecord(@NotNull String nameUser, @NotNull BigDecimal bankBalance, @NotBlank String pixKey, @NotNull
-                                UUID idUser){
+public record BankAccountRecord(@NotNull BigDecimal bankBalance, @NotBlank String pixKey, @NotNull UserRecord user){
 }

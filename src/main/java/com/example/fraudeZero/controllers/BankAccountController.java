@@ -2,7 +2,9 @@ package com.example.fraudeZero.controllers;
 
 
 import com.example.fraudeZero.dtos.BankAccountRecord;
+import com.example.fraudeZero.dtos.UserRecord;
 import com.example.fraudeZero.models.BankAccount;
+import com.example.fraudeZero.models.User;
 import com.example.fraudeZero.service.BankAccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +26,12 @@ public class BankAccountController {
     @PostMapping("/saveAccount")
     public ResponseEntity<Object> saveBankAccount(@Valid @RequestBody BankAccountRecord bankAccountRecord){
         var account = new BankAccount();
-        BeanUtils.copyProperties(bankAccountRecord, account);
+        BeanUtils.copyProperties(bankAccountRecord, account, "user");
+
+        UserRecord userRecord = bankAccountRecord.user();
+        User user = new User();
+        BeanUtils.copyProperties(userRecord, user);
+        account.setUser(user);
 
         bankAccountService.saveAccount(account);
 

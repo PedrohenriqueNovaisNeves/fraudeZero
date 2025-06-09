@@ -8,5 +8,5 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public record TransferRecord(@NotBlank String origimAccount, @NotBlank String targetAccount, @NotNull BigDecimal value, @NotBlank String descriptionTransfer) {
+public record TransferRecord(@NotBlank String origimAccount, @NotBlank String targetAccount, @NotNull BigDecimal value, @NotBlank String descriptionTransfer, @NotNull Adress adress) {
 }

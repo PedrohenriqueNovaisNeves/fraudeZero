@@ -22,6 +22,7 @@ public class Transfer {
     private BigDecimal value;
     private String descriptionTransfer;
     private LocalDateTime dateTime;
+    private Adress adress;
 
     public UUID getTransferId() {
         return transferId;
@@ -47,6 +48,10 @@ public class Transfer {
         return dateTime;
     }
 
+    public Adress getAdress(){
+        return adress;
+    }
+
     public void setTransferId(UUID transferId) {
         this.transferId = transferId;
     }
@@ -69,5 +74,9 @@ public class Transfer {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public void setAdress(Adress adress){
+        this.adress = adress;
     }
 }
