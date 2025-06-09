@@ -22,6 +22,16 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bankAccount")
     private BankAccount bankAccount;
+    private String email;
+    private String password;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
     public UUID getIdUser() {
         return idUser;
@@ -37,6 +47,14 @@ public class User {
 
     public BankAccount getBankAccount() {
         return bankAccount;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setIdUser(UUID idUser) {
