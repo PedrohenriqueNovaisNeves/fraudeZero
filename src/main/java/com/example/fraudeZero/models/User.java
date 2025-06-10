@@ -18,13 +18,8 @@ public class User {
 
     @Column(nullable = false)
     private String cpfUser;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bankAccount")
-    private BankAccount bankAccount;
     private String email;
     private String password;
-
     public String getEmail() {
         return email;
     }
@@ -45,10 +40,6 @@ public class User {
         return cpfUser;
     }
 
-    public BankAccount getBankAccount() {
-        return bankAccount;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -67,9 +58,5 @@ public class User {
 
     public void setCpfUser(String cpfUser) {
         this.cpfUser = cpfUser;
-    }
-
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
     }
 }

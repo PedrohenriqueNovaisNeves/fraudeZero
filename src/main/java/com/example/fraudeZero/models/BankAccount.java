@@ -13,8 +13,8 @@ public class BankAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idAccount;
-    @OneToOne
-    @JoinColumn(name = "owner")
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "owner_id", referencedColumnName = "idUser")
     private User user;
     private BigDecimal bankBalance;
     @Column(nullable = false, unique = true)
