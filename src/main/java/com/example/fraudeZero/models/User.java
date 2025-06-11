@@ -20,6 +20,11 @@ public class User {
     private String cpfUser;
     private String email;
     private String password;
+    @Column(nullable = false)
+    private boolean emailValidated;
+    @Column(length = 36)
+    private String validationToken;
+
     public String getEmail() {
         return email;
     }
@@ -40,6 +45,14 @@ public class User {
         return cpfUser;
     }
 
+    public boolean isEmailValidated(){
+        return emailValidated;
+    }
+
+    public String getValidationToken(){
+        return validationToken;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -58,5 +71,13 @@ public class User {
 
     public void setCpfUser(String cpfUser) {
         this.cpfUser = cpfUser;
+    }
+
+    public void setEmailValidated(boolean emailValidated){
+        this.emailValidated = emailValidated;
+    }
+
+    public void setValidationToken(String validationToken){
+        this.validationToken = validationToken;
     }
 }
