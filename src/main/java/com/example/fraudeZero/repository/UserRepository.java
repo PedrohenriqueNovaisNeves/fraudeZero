@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
 
-    Optional<User> findByValidationToken(String validationToken);
+    Optional<User> findByValidationToken(UUID validationToken);
 }

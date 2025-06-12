@@ -40,7 +40,7 @@ public class TransferService {
     private static final int VALIDATION_WAIT_MINUTES = 3;
 
 
-    private final Map<String, CompletableFuture<Object>> pendingValidations = new ConcurrentHashMap<>();
+    private final Map<UUID, CompletableFuture<Object>> pendingValidations = new ConcurrentHashMap<>();
 
     public boolean validateBalance(BigDecimal balance, BigDecimal value) {
 
@@ -77,12 +77,12 @@ public class TransferService {
 
 
     public boolean validateLocation(Adress adress) {
-        if(adress == null){
+        if (adress == null) {
             throw new RuntimeException("Location is null");
         }
 
-        for(Adress validAdress : VALID_ADRESSES){
-            if(adress == validAdress){
+        for (Adress validAdress : VALID_ADRESSES) {
+            if (adress == validAdress) {
                 return true;
             }
         }
@@ -90,7 +90,7 @@ public class TransferService {
         return false;
     }
 
-    private void sendValidationEmail(String to, String validationToken, String origimAccount, String destinationAccount, BigDecimal value, Adress location, String description) {
+    private void sendValidationEmail(String to, UUID validationToken, String origimAccount, String destinationAccount, BigDecimal value, Adress location, String description) {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
@@ -118,11 +118,18 @@ public class TransferService {
     }
 
     @Transactional
-    public void validateEmail(String validationToken, String origimAccount, String destinationAccount, BigDecimal value, Adress location, String description) {
-        System.out.println("Validating email with token: " + validationToken);
+    public void validateEmail(String tokenStr, String origimAccount, String destinationAccount, BigDecimal value, Adress location, String description) {
+        var bank = bankAccountRepository.findByPixKey(origimAccount)
+                .orElseThrow(() -> new RuntimeException("account not found"));
+
+        var user = bank.getUser();
+        System.out.println("Validating email with token string: " + tokenStr);
+        UUID validationToken = UUID.fromString(tokenStr); // Converte a string da URL para UUID
+        user.setValidationToken(validationToken);
+        userRepository.save(user);
         CompletableFuture<Object> future = pendingValidations.get(validationToken);
         if (future != null && !future.isDone()) {
-            User user = userRepository.findByValidationToken(validationToken)
+            userRepository.findByValidationToken(validationToken)
                     .orElseThrow(() -> new RuntimeException("Invalid validation token"));
             System.out.println("Found user with token: " + user.getEmail() + ", Token in DB: " + user.getValidationToken());
 
@@ -184,11 +191,11 @@ public class TransferService {
             }
             User user = origin.get().getUser();
             if (!user.isEmailValidated()) {
-                String validationToken = UUID.randomUUID().toString();
-                System.out.println("Generated validation token: " + validationToken + " for user: " + user.getEmail());
+                UUID validationToken = UUID.randomUUID(); // Gera UUID diretamente
+                System.out.println("Generated validation token: " + validationToken + " for user: " + user.getEmail() + ", Before save: " + user.getValidationToken());
                 user.setValidationToken(validationToken);
                 User savedUser = userRepository.save(user); // Salva e verifica
-                System.out.println("Saved user with token: " + savedUser.getValidationToken());
+                System.out.println("After save - User ID: " + savedUser.getIdUser() + ", Token: " + savedUser.getValidationToken() + ", Email: " + savedUser.getEmail());
 
                 CompletableFuture<Object> future = new CompletableFuture<>();
                 pendingValidations.put(validationToken, future);
@@ -230,11 +237,11 @@ public class TransferService {
 
         User user = origin.get().getUser();
         if (!user.isEmailValidated()) {
-            String validationToken = UUID.randomUUID().toString();
-            System.out.println("Generated validation token: " + validationToken + " for user: " + user.getEmail());
+            UUID validationToken = UUID.randomUUID(); // Gera UUID diretamente
+            System.out.println("Generated validation token: " + validationToken + " for user: " + user.getEmail() + ", Before save: " + user.getValidationToken());
             user.setValidationToken(validationToken);
             User savedUser = userRepository.save(user); // Salva e verifica
-            System.out.println("Saved user with token: " + savedUser.getValidationToken());
+            System.out.println("After save - User ID: " + savedUser.getIdUser() + ", Token: " + savedUser.getValidationToken() + ", Email: " + savedUser.getEmail());
 
             CompletableFuture<Object> future = new CompletableFuture<>();
             pendingValidations.put(validationToken, future);

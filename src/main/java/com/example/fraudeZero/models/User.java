@@ -22,8 +22,8 @@ public class User {
     private String password;
     @Column(nullable = false)
     private boolean emailValidated;
-    @Column(length = 36)
-    private String validationToken;
+    @Column(columnDefinition = "uuid", nullable = true)
+    private UUID validationToken;
 
     public String getEmail() {
         return email;
@@ -49,7 +49,7 @@ public class User {
         return emailValidated;
     }
 
-    public String getValidationToken(){
+    public UUID getValidationToken(){
         return validationToken;
     }
 
@@ -77,7 +77,7 @@ public class User {
         this.emailValidated = emailValidated;
     }
 
-    public void setValidationToken(String validationToken){
+    public void setValidationToken(UUID validationToken){
         this.validationToken = validationToken;
     }
 }
