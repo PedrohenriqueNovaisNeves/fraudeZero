@@ -7,5 +7,5 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record BankAccountRecord(@NotNull BigDecimal bankBalance, @NotBlank String pixKey, @NotNull UserRecord user){
+public record BankAccountRecord(@NotNull BigDecimal bankBalance, @NotBlank String pixKey, @NotNull UUID id){
 }

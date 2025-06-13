@@ -4,6 +4,7 @@ import com.example.fraudeZero.dtos.UserRecord;
 import com.example.fraudeZero.models.User;
 import com.example.fraudeZero.repository.BankAccountRepository;
 import com.example.fraudeZero.repository.UserRepository;
+import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,5 +62,13 @@ public class UserService {
         }
 
         userRepository.delete(user.get());
+    }
+
+    public Object loginUser(String cpfUser, String password){
+
+        JSONObject json = new JSONObject(cpfUser);
+        String cpf = json.getString("cpfUser");
+
+        return userRepository.findByCpfUser(cpf);
     }
 }

@@ -10,4 +10,6 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByValidationToken(UUID validationToken);
+
+    Optional<User> findByCpfUser(String cpfUser);
 }
