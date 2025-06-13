@@ -25,4 +25,10 @@ public class UserController {
         userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered with id, " + user.getIdUser());
     }
+
+    @PostMapping("/loginUser")
+    public ResponseEntity<Object> loginUser(@RequestBody String cpfUser, String password){
+        Object result = userService.loginUser(cpfUser, password);
+        return ResponseEntity.status(HttpStatus.OK).body("Login completed with successfully!!");
+    }
 }
