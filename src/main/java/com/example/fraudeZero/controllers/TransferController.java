@@ -1,18 +1,14 @@
 package com.example.fraudeZero.controllers;
 
 import com.example.fraudeZero.dtos.TransferRecord;
-import com.example.fraudeZero.models.Adress;
-import com.example.fraudeZero.models.Transfer;
 import com.example.fraudeZero.service.TransferService;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/transfer")
