@@ -1,5 +1,6 @@
 package com.example.fraudeZero.dtos;
 
+import com.example.fraudeZero.models.Adress;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

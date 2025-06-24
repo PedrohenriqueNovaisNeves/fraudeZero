@@ -1,8 +1,10 @@
 package com.example.fraudeZero.service;
 
+import com.example.fraudeZero.dtos.AddressRecord;
 import com.example.fraudeZero.dtos.BankAccountRecord;
 import com.example.fraudeZero.models.BankAccount;
 import com.example.fraudeZero.models.User;
+import com.example.fraudeZero.repository.AddressRepository;
 import com.example.fraudeZero.repository.BankAccountRepository;
 import com.example.fraudeZero.repository.UserRepository;
 import jakarta.transaction.Transactional;

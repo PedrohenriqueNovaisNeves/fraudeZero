@@ -1,6 +1,7 @@
 package com.example.fraudeZero.controllers;
 
 import com.example.fraudeZero.dtos.TransferRecord;
+import com.example.fraudeZero.models.Adress;
 import com.example.fraudeZero.service.TransferService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
