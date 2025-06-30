@@ -3,8 +3,10 @@ package com.example.fraudeZero.service;
 import com.example.fraudeZero.dtos.AddressRecord;
 import com.example.fraudeZero.models.Address;
 import com.example.fraudeZero.models.BankAccount;
+import com.example.fraudeZero.models.User;
 import com.example.fraudeZero.repository.AddressRepository;
 import com.example.fraudeZero.repository.BankAccountRepository;
+import com.example.fraudeZero.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
@@ -25,11 +27,32 @@ public class AddressService {
     @Autowired
     BankAccountRepository bankAccountRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
+    public boolean validationOfExactNumbers(String zipCode){
+        char[]convertStringToChar = zipCode.toCharArray();
+        int numberOfCharacters = convertStringToChar.length;
+
+        if((numberOfCharacters > 8) || (numberOfCharacters < 8)){
+            return true;
+        }
+
+        return false;
+    }
+
     @Transactional
-    public Object saveAddress(AddressRecord addressRecord){
+    public Object saveAddress(String pixKey, AddressRecord addressRecord){
+        Optional<BankAccount> account = bankAccountRepository.findByPixKey(pixKey);
+
+        if(account.isEmpty()){
+            throw new RuntimeException("account not found");
+        }
+
         var address = new Address();
         BeanUtils.copyProperties(addressRecord, address);
 
+        address.setBankAccount(account.get());
         return addressRepository.save(address);
     }
 

@@ -12,4 +12,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByValidationToken(UUID validationToken);
 
     Optional<User> findByCpfUser(String cpfUser);
+
+    Optional<User> findByNameUser(String nameUser);
 }
