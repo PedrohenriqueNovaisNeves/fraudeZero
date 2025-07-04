@@ -26,6 +26,7 @@ public class SecurityConfig {
                         .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/bankAccount/**").permitAll()
                         .requestMatchers("/transfer/**").permitAll()
+                        .requestMatchers("/address/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());

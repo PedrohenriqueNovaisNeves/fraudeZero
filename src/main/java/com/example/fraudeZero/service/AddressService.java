@@ -3,6 +3,7 @@ package com.example.fraudeZero.service;
 import com.example.fraudeZero.dtos.AddressRecord;
 import com.example.fraudeZero.models.Address;
 import com.example.fraudeZero.models.BankAccount;
+import com.example.fraudeZero.models.CepResponse;
 import com.example.fraudeZero.models.User;
 import com.example.fraudeZero.repository.AddressRepository;
 import com.example.fraudeZero.repository.BankAccountRepository;
@@ -30,20 +31,16 @@ public class AddressService {
     @Autowired
     UserRepository userRepository;
 
-    public boolean validationOfExactNumbers(String zipCode){
-        char[]convertStringToChar = zipCode.toCharArray();
-        int numberOfCharacters = convertStringToChar.length;
-
-        if((numberOfCharacters > 8) || (numberOfCharacters < 8)){
-            return true;
-        }
-
-        return false;
-    }
+    @Autowired
+    BrasilApiService brasilApiService;
 
     @Transactional
     public Object saveAddress(String pixKey, AddressRecord addressRecord){
-        Optional<BankAccount> account = bankAccountRepository.findByPixKey(pixKey);
+        JSONObject json = new JSONObject(pixKey);
+
+        String searchAccount = json.getString("pixKey");
+
+        Optional<BankAccount> account = bankAccountRepository.findByPixKey(searchAccount);
 
         if(account.isEmpty()){
             throw new RuntimeException("account not found");
@@ -53,6 +50,22 @@ public class AddressService {
         BeanUtils.copyProperties(addressRecord, address);
 
         address.setBankAccount(account.get());
+
+        String cep = addressRecord.zipCode().replaceAll("[^0-9]", "").trim();
+        CepResponse response = brasilApiService.getAddressByCep(cep);
+
+        if(response == null || response.getCep() == null){
+            throw new RuntimeException("The zip code provided does not exist.");
+        }
+
+        String apiStreet = response.getStreet() != null ? response.getStreet().toLowerCase() : "";
+        String inputPublicPlace = addressRecord.publicPlace().toLowerCase();
+
+        if(!apiStreet.contains(inputPublicPlace) && !inputPublicPlace.contains(apiStreet)){
+            throw new RuntimeException("The street does not match the postal code address.");
+        }
+
+
         return addressRepository.save(address);
     }
 

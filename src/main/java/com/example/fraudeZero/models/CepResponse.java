@@ -1,6 +1,6 @@
 package com.example.fraudeZero.models;
 
-public class cepResponse {
+public class CepResponse {
 
     private String cep;
     private String state;
