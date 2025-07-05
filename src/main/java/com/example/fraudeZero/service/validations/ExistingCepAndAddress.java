@@ -13,5 +13,5 @@ public @interface ExistingCepAndAddress {
 
     String message() default "The zip code does not exist or the street does not match the address.";
     Class<?>[] groups() default {};
-    Class<? extends Payload>[] payLoad() default{};
+    Class<? extends Payload>[] payload() default{};
 }

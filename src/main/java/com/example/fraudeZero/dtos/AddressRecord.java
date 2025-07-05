@@ -13,5 +13,9 @@ public record AddressRecord(@NotBlank(message = "Title cannot be blank.")
                             @NotBlank(message = "The zip code cannot be blank.")
                             @Pattern(regexp = "^\\d{5}-\\d{3}$|^\\d{8}$", message = "The zip code must be in the format 12345-678 or 12345678.")
                             @ExistingCepAndAddress(message = "The zip code does not exist or the street does not match the address.")
-                            String zipCode) {
+                            String zipCode,
+
+                            @NotBlank(message = "the pix key cannot be blank")
+                            String pixKey
+) {
 }

@@ -35,12 +35,11 @@ public class AddressService {
     BrasilApiService brasilApiService;
 
     @Transactional
-    public Object saveAddress(String pixKey, AddressRecord addressRecord){
-        JSONObject json = new JSONObject(pixKey);
+    public Object saveAddress(AddressRecord addressRecord){
 
-        String searchAccount = json.getString("pixKey");
+        String keyPix = addressRecord.pixKey();
 
-        Optional<BankAccount> account = bankAccountRepository.findByPixKey(searchAccount);
+        Optional<BankAccount> account = bankAccountRepository.findByPixKey(keyPix);
 
         if(account.isEmpty()){
             throw new RuntimeException("account not found");
@@ -51,7 +50,7 @@ public class AddressService {
 
         address.setBankAccount(account.get());
 
-        String cep = addressRecord.zipCode().replaceAll("[^0-9]", "").trim();
+        String cep = address.getZipCode().replaceAll("[^0-9]", "").trim();
         CepResponse response = brasilApiService.getAddressByCep(cep);
 
         if(response == null || response.getCep() == null){
@@ -59,7 +58,7 @@ public class AddressService {
         }
 
         String apiStreet = response.getStreet() != null ? response.getStreet().toLowerCase() : "";
-        String inputPublicPlace = addressRecord.publicPlace().toLowerCase();
+        String inputPublicPlace = address.getPublicPlace().toLowerCase();
 
         if(!apiStreet.contains(inputPublicPlace) && !inputPublicPlace.contains(apiStreet)){
             throw new RuntimeException("The street does not match the postal code address.");
