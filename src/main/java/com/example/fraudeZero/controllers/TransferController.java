@@ -2,6 +2,7 @@ package com.example.fraudeZero.controllers;
 
 import com.example.fraudeZero.dtos.TransferRecord;
 import com.example.fraudeZero.models.Adress;
+import com.example.fraudeZero.models.Transfer;
 import com.example.fraudeZero.service.TransferService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/transfer")
@@ -57,5 +59,13 @@ public class TransferController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error validating email: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/listTransfersByAccount")
+    public ResponseEntity<List> listTransfersByAccount(@Valid @RequestBody String origimAccount){
+
+        List<Transfer> transfers = transferService.listTransferByAccount(origimAccount);
+
+        return ResponseEntity.status(HttpStatus.OK).body(transfers);
     }
 }

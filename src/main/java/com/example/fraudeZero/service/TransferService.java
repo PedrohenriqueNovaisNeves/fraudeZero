@@ -39,6 +39,19 @@ public class TransferService {
     private static final String BASE_URL = "http://localhost:8080/transfer";
     private static final int VALIDATION_WAIT_MINUTES = 3;
 
+    public List<Transfer> listAllTransfer(){
+        return transferRepository.findAll();
+    }
+
+    public List listTransferByAccount(String account){
+        List<Transfer> transfers = transferRepository.findByOrigimAccount(account);
+
+        if(transfers.isEmpty()){
+            throw new RuntimeException("No transfers found");
+        }
+
+        return transfers;
+    }
 
     private final Map<UUID, CompletableFuture<Object>> pendingValidations = new ConcurrentHashMap<>();
 
