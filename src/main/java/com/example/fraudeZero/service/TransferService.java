@@ -1,6 +1,7 @@
 package com.example.fraudeZero.service;
 
 import com.example.fraudeZero.models.*;
+import com.example.fraudeZero.repository.AddressRepository;
 import com.example.fraudeZero.repository.BankAccountRepository;
 import com.example.fraudeZero.repository.TransferRepository;
 import com.example.fraudeZero.repository.UserRepository;
@@ -44,7 +45,11 @@ public class TransferService {
     }
 
     public List listTransferByAccount(String account){
-        List<Transfer> transfers = transferRepository.findByOrigimAccount(account);
+
+        JSONObject json = new JSONObject(account);
+        String pixKey = json.getString("pixKey");
+
+        List<Transfer> transfers = transferRepository.findByOrigimAccount(pixKey);
 
         if(transfers.isEmpty()){
             throw new RuntimeException("No transfers found");

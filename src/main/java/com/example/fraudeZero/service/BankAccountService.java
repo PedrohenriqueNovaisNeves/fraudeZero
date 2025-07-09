@@ -7,6 +7,7 @@ import com.example.fraudeZero.models.User;
 import com.example.fraudeZero.repository.AddressRepository;
 import com.example.fraudeZero.repository.BankAccountRepository;
 import com.example.fraudeZero.repository.UserRepository;
+import com.example.fraudeZero.service.validations.ValidationsBankAccount;
 import jakarta.transaction.Transactional;
 import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
@@ -28,12 +29,15 @@ public class BankAccountService {
     @Autowired
     UserRepository userRepository;
 
-    @Transactional
-    public Object saveAccount(BankAccountRecord bankAccountRecord){
-        var account = new BankAccount();
-        Optional<User> user = userRepository.findById(bankAccountRecord.id());
+    @Autowired
+    ValidationsBankAccount validationsBankAccount;
 
-        if(user.isEmpty()){
+    @Transactional
+    public void saveAccount(BankAccountRecord bankAccountRecord) {
+        var account = new BankAccount();
+        Optional<User> user = userRepository.findByPassword(bankAccountRecord.password());
+
+        if (user.isEmpty()) {
             throw new RuntimeException("user not found");
         }
 
@@ -41,8 +45,13 @@ public class BankAccountService {
 
             User newUser = user.get();
             BeanUtils.copyProperties(bankAccountRecord, account);
+
+            if (validationsBankAccount.validatePixKey(account.getPixKey())) {
+                return;
+            }
+
             account.setUser(newUser);
-            return bankAccountRepository.save(account);
+            bankAccountRepository.save(account);
 
         } catch (DataAccessException e) {
 
@@ -65,14 +74,14 @@ public class BankAccountService {
 
     }
 
-    public List<BankAccount> listAllAccounts(){
+    public List<BankAccount> listAllAccounts() {
         return bankAccountRepository.findAll();
     }
 
-    public Object updateDataAccount(UUID id, BankAccount bankAccount){
+    public Object updateDataAccount(UUID id, BankAccount bankAccount) {
         Optional<BankAccount> account = bankAccountRepository.findById(id);
 
-        if(account.isEmpty()){
+        if (account.isEmpty()) {
             throw new RuntimeException("Account not found");
         }
 
@@ -84,7 +93,7 @@ public class BankAccountService {
         return bankAccountRepository.save(newAccount);
     }
 
-    public void deleteAllAccounts(){
+    public void deleteAllAccounts() {
         bankAccountRepository.deleteAll();
     }
 

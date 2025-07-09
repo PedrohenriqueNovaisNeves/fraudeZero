@@ -34,6 +34,30 @@ public class AddressService {
     @Autowired
     BrasilApiService brasilApiService;
 
+    public Object testvalidateLocationRegistered(String title){
+
+        JSONObject json = new JSONObject(title);
+        String titleAddress = json.getString("titleAddress");
+
+        Optional<Address> address = addressRepository.findByTitle(titleAddress);
+
+        if(address.isEmpty()){
+            throw new RuntimeException("Address not registered!");
+        }
+
+        return "Address validated";
+    }
+
+    public boolean validateLocationRegistered(String title){
+        Optional<Address> address = addressRepository.findByTitle(title);
+
+        if(address.isEmpty()){
+            return true;
+        }
+
+        return false;
+    }
+
     @Transactional
     public Object saveAddress(AddressRecord addressRecord){
 

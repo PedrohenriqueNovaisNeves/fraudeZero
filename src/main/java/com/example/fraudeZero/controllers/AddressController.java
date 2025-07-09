@@ -2,6 +2,8 @@ package com.example.fraudeZero.controllers;
 
 import com.example.fraudeZero.dtos.AddressRecord;
 import com.example.fraudeZero.service.AddressService;
+import com.example.fraudeZero.service.TransferService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,4 +26,11 @@ public class AddressController {
         addressService.saveAddress(addressRecord);
         return ResponseEntity.status(HttpStatus.CREATED).body("Secure address registered with successfully!");
     }
+
+    @PostMapping("/testValidationAddressRegiostered")
+    public ResponseEntity<Object> testValidationAddressRegiostered(@Valid @RequestBody String title){
+
+        return ResponseEntity.status(HttpStatus.OK).body(addressService.testvalidateLocationRegistered(title));
+    }
+
 }

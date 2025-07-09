@@ -28,7 +28,7 @@ public class BankAccountController {
 
     @PostMapping("/saveAccount")
     public ResponseEntity<Object> saveBankAccount(@Valid @RequestBody BankAccountRecord bankAccountRecord){
-        Object result = bankAccountService.saveAccount(bankAccountRecord);
+        bankAccountService.saveAccount(bankAccountRecord);
         return ResponseEntity.ok("Account registered with successfully");
     }
 }

@@ -4,10 +4,12 @@ import com.example.fraudeZero.dtos.UserRecord;
 import com.example.fraudeZero.models.User;
 import com.example.fraudeZero.repository.BankAccountRepository;
 import com.example.fraudeZero.repository.UserRepository;
+import com.example.fraudeZero.service.validations.ValidationsUser;
 import org.json.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +22,18 @@ public class UserService {
     UserRepository userRepository;
 
     @Autowired
-    BankAccountRepository bankAccountRepository;
+    ValidationsUser validationsUser;
 
-    public User saveUser(User user){
-        return userRepository.save(user);
+    @Transactional
+    public void saveUser(UserRecord userRecord){
+        var userModel = new User();
+        BeanUtils.copyProperties(userRecord, userModel);
+
+        if(validationsUser.validatePassword(userModel.getPassword()) || validationsUser.validateEmail(userModel.getEmail()) || validationsUser.validateCpf(userModel.getCpfUser())){
+            return;
+        }
+
+        userRepository.save(userModel);
     }
 
     public List<User> listAllUsers(){
