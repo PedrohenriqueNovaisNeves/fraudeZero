@@ -12,4 +12,6 @@ public interface AddressRepository extends JpaRepository<Address, UUID> {
     Optional<Address> findByZipCode(String zipCode);
 
     List<Address> findByBankAccount_idAccount(UUID accountId);
+
+    Optional<Address> findByTitle(String title);
 }

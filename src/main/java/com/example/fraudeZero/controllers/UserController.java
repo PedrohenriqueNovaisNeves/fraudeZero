@@ -19,11 +19,9 @@ public class UserController {
 
     @PostMapping("/saveUser")
     public ResponseEntity<Object> saveUser(@Valid @RequestBody UserRecord userRecord){
-        var user = new User();
-        BeanUtils.copyProperties(userRecord, user);
 
-        userService.saveUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User registered with id, " + user.getIdUser());
+        userService.saveUser(userRecord);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User registered with successfully");
     }
 
     @PostMapping("/loginUser")
